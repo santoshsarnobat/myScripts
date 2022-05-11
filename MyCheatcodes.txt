@@ -1,0 +1,2188 @@
+/*CHEATCODE - Author: Santosh S*/
+
+//Document readyState
+$(document).ready(function() {
+
+
+});
+
+//Keyup Press Clear
+
+$("#xxx").keyup(function(){if(isNaN($("#xxx").val())){$("#xxx").val("");alert("Please enter currency value");}});
+
+//Add SPService new item
+    $().SPServices({
+        operation: "UpdateListItems",
+        async: false,
+        batchCmd: "New",
+        listName: "Feedback",
+        valuepairs: [["Title", subject], ["Message", message]],
+        completefunc: function(xData, Status) {
+          alert("completed");
+        }
+    });
+
+
+//Get List Item SPService
+$().SPServices({
+  operation:"GetListItems",
+  webURL: webURL,
+  listName: "Approved Access Request",
+  async: true,
+  completefunc: function (xData, Status) {
+		$(xData.responseXML).SPFilterNode("z:row").each(function() {
+
+	});
+	}
+});
+
+
+
+
+//Get current date and time
+
+var curDate=new Date();
+var twoDigitMonth = Number(curDate.getMonth()) + 1 + "";if(twoDigitMonth.length == 1){twoDigitMonth = "0" + twoDigitMonth;}
+var twoDigitDate = curDate.getDate() + "";if (twoDigitDate.length == 1){twoDigitDate = "0" + twoDigitDate;}
+var twoDigitHours = curDate.getHours() + "";if (twoDigitHours.length == 1){twoDigitHours = "0" + twoDigitHours;}
+var twoDigitMinutes = curDate.getMinutes() + "";if (twoDigitMinutes.length == 1){twoDigitMinutes = "0" + twoDigitMinutes;}
+var twoDigitSeconds = curDate.getSeconds() + "";if (twoDigitSeconds.length == 1){twoDigitSeconds = "0" + twoDigitSeconds;}
+var currentDate = curDate.getFullYear() + "-" + twoDigitMonth + "-" + twoDigitDate + " " + twoDigitHours + ":" + twoDigitMinutes + ":" + twoDigitSeconds;
+console.log(currentDate);
+
+
+
+			
+//Add date through spservice
+
+curDate=new Date();
+twoDigitMonth = Number(curDate.getMonth()) + 1 + "";if(twoDigitMonth.length == 1){twoDigitMonth = "0" + twoDigitMonth;}
+twoDigitDate = curDate.getDate() + "";if (twoDigitDate.length == 1){twoDigitDate = "0" + twoDigitDate;}
+currentDate = curDate.getFullYear() + "-" + twoDigitMonth + "-" + twoDigitDate;
+
+    $().SPServices({
+        operation: "UpdateListItems",
+		webURL: "https://teamsites.chrysler.com/test123/suyog",
+        async: false,
+        batchCmd: "New",
+        listName: "TestTest",
+        valuepairs: [["supplier", "Hello"], ["abc", currentDate]],
+        completefunc: function(xData, Status) {
+          console.log($(xData.responseXML).find("ErrorText").text());
+        }
+    });
+	
+	
+//Get all users in site collection
+	
+var counter = 1;
+$().SPServices({
+      operation: "GetUserCollectionFromSite",
+      webURL: "https://teamsites.nafta.fcagroup.com/sites/me",
+      completefunc: function(xData, Status) {debugger;
+        $(xData.responseXML).find("User").each(function() {
+          console.log(counter++);
+		  console.log("Site Admin: " + $(this).attr("IsSiteAdmin"));
+		  console.log("Name: " + $(this).attr("Name"));
+		  console.log("TID: " + $(this).attr("LoginName").split("\\")[1]);
+		  console.log("Email: " + $(this).attr("Email"));
+
+        });
+      }
+  });
+		
+
+//Get current user info
+$().SPServices({
+	operation: "GetUserInfo",
+	webURL: url,
+	userLoginName: $().SPServices.SPGetCurrentUser(),
+	completefunc: function(xData, Status)
+	{
+	console.log(xData.responseXML);
+	}
+});		
+		
+//Resolve through Partners site
+	 $().SPServices({
+		operation: "GetUserProfileByName",
+		AccountName: newName,
+		webURL: "https://partners.chrysler.com/",
+		completefunc: function(data, status) {
+			var profile = {};
+			$(data.responseText).find("PropertyData").each(function(idx, val) {
+				var $val = $(val);
+				var name = $val.find("Name").text();
+				var value = $val.find("Value").text();
+				profile[name] = value;
+			});
+
+			$("#a7").append("<tr><td>" + i + "</td><td>TID: " + newName + "</td><td>Name: " + PreferredName + "</td><td>URL:"+window.location.href.replace("_layouts/accessdenied.aspx","")+"</td></tr>");
+		}
+	}); 
+									
+									
+									
+									
+// Target specific dropdown									
+for(var i = 0;i<document.getElementsByClassName("ms-RadioText").length;i++)
+{
+aaa = document.getElementsByClassName("ms-RadioText")[i];
+if(aaa.getAttribute("title") == "Status")
+    {
+        bbb = document.getElementsByClassName("ms-RadioText")[i];
+    }
+}
+
+
+
+//Get User profile details by id / tid
+
+var profile=[];
+$().SPServices({operation:"GetUserProfileByName",async:!1,AccountName:"cag\\t4211sp",completefunc:function(e,o){$(e.responseText).find("PropertyData").each(function(e,o){var t=$(o),n=t.find("Name").text(),r=t.find("Value").text();profile[n]=r})}}),console.log(profile.PreferredName);
+
+
+//Focus out class validation using regex
+NWF$(".MamWSB").focusout(function () {
+if(this.value!=this.value.match(/[\w\d&\-\#\ ]*/))
+{
+	this.value="";
+	SP.UI.Notify.addNotification("Please enter alphabet, number and & # - symbols");
+	return false;
+}
+});
+
+//1.0 to 8.0 : var timeValidationPattern = /(^(([0-7]|[0-7])\.[0-9])$)|(^(([8]|[8])\.0)$)|(^([0-8])$)|^(([0-7]|[0-7])\.[0-9])$/i;
+
+//Get Latest item in list
+
+$().SPServices({
+	operation:"GetListItems",
+	listName: "AVP Library",
+	async: false,
+	webURL: "https://teamsites.nafta.fcagroup.com/sites/mangpc/2013/",
+	CAMLQuery: "<Query><OrderBy><FieldRef Name='ID' Ascending='false' /></OrderBy></Query>",
+	CAMLRowLimit : 1,
+  completefunc: function (xData, Status) {
+		$(xData.responseXML).SPFilterNode("z:row").each(function() {
+			lastIdforBRL = $(this).attr("ows_ID");
+			if(lastIdforBRL == "")
+			{
+				lastIdforBRL = 0;
+			}
+	});
+	}
+});
+
+
+//Delete single through SPServices
+$().SPServices({
+ operation: "UpdateListItems",
+ async: false,
+ listName: "User Information List",
+ batchCmd: "Delete",
+ ID: 67,
+ completefunc: function(xData, Status) {
+ console.log('List items has been deleted');
+ }
+});
+
+
+//  Delete All Items through SPServices
+
+    $().SPServices({
+      operation:'GetListItems',
+      listName: "PQP Loop Status List",
+      CAMLViewFields:'<ViewFields><FieldRef Name="ID"/></ViewFields>',
+	  async: false,
+      completefunc: function (xData, Status) {
+		  
+        $(xData.responseXML).SPFilterNode("z:row").each(function() {
+          var ID = $(this).attr("ows_ID");
+          $().SPServices({
+            operation: "UpdateListItems",
+            listName: "PQP Loop Status List",
+			async: false,
+            updates: "<Batch OnError='Continue'>" +
+               "<Method ID='1' Cmd='Delete'>" +
+                 "<Field Name='ID'>" + ID + "</Field>" +
+               "</Method>" +
+             "</Batch>",
+            completefunc: function (xData, Status) {
+              console.log("Deleted" + ID);
+            }
+          });
+        });
+		
+		
+		
+      }
+    });
+
+	
+	
+	
+// Reload after gain focus
+	var blurred = false;
+	window.onblur = function() { blurred = true; };
+	window.onfocus = function() { blurred && (location.reload()); };
+
+
+
+
+//Wait Popup time
+
+SP.UI.ModalDialog.showWaitScreenWithNoClose("Please Wait", "It may take some time for data transfer", 80, 430);
+setTimeout(function() {
+		//This will be called after 500 milliseconds
+}, 500);
+	
+	
+//Popup Links
+
+Dissaperaing popup: https://codepen.io/kipp0/pen/pPNrrj
+Simple jQuery Popup: https://codepen.io/1jnole/pen/XKGdPG
+Input Popup: http://jsfiddle.net/kwalser/ymssceqv/
+Video Popup: https://jsfiddle.net/solodev/u43vsyzu/
+
+	
+	
+//Group permission jquery
+	
+	
+	$().SPServices({operation: "GetGroupCollectionFromUser",userLoginName:$().SPServices.SPGetCurrentUser(),completefunc: function(xData, Status){				
+							isTE = $(xData.responseXML).find("Group[Name='xxx']").length;
+							}});
+							
+							
+							
+//Regex first occurence
+	
+	till 1st ; char
+	.+?(?=;)
+	
+	
+	
+	
+//People picker in HTML
+	
+	<td><div id="PP"><SharePoint:PeopleEditor runat="server" ID="SdfPeoplePicker" AutoPostBack="false" AllowEmpty="true" SelectionSet="User" BorderWidth="0px" PlaceButtonsUnderEntityEditor="true" Rows="1" AllowTypeIn="True" MaximumHeight="3" EnableBrowse="True" Width="200px" Class="ms-inputuserfield" /></div></td>
+	
+	<!DOCTYPE html>
+		<html>
+		<head>
+			<title></title>
+			<meta charset="utf-8" />
+			<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+			<script type="text/javascript" src="/_layouts/15/sp.core.js"></script>
+			<script type="text/javascript" src="/_layouts/15/clienttemplates.js"></script>
+			<script type="text/javascript" src="/_layouts/15/clientforms.js"></script>
+			<script type="text/javascript" src="/_layouts/15/clientpeoplepicker.js"></script>
+			<script type="text/javascript" src="/_layouts/15/autofill.js"></script>
+			<script type="text/javascript" src="/_layouts/15/1033/sts_strings.js"></script>
+
+
+			<script type="text/javascript">
+				$(document).ready(function() {
+					initializePeoplePicker('peoplePickerDiv');
+					registerPPOnChangeEvent($('#peoplePickerDiv'));
+				});
+
+				function initializePeoplePicker(peoplePickerElementId, Users) {
+					if (typeof(Users) == 'undefined') Users = null;
+					// Create a schema to store picker properties, and set the properties.
+					var schema = {};
+					schema['PrincipalAccountType'] = 'User,DL,SecGroup,SPGroup';
+					schema['SearchPrincipalSource'] = 15;
+					schema['ResolvePrincipalSource'] = 15;
+					schema['AllowMultipleValues'] = false;
+					schema['MaximumEntitySuggestions'] = 50;
+					schema['Width'] = '280px';
+					this.SPClientPeoplePicker_InitStandaloneControlWrapper(peoplePickerElementId, Users, schema);
+				}
+
+				function registerPPOnChangeEvent(ppElement) {
+					var ppId = ppElement.attr('id') + "_TopSpan";
+					console.log(ppId);
+
+					//var addOnChanged = function(ctx) {
+					if (SPClientPeoplePicker &&
+						SPClientPeoplePicker.SPClientPeoplePickerDict &&
+						SPClientPeoplePicker.SPClientPeoplePickerDict[ppId]) {
+
+						console.log("In registerPPOnChangeEvent if");
+
+						var picker = SPClientPeoplePicker.SPClientPeoplePickerDict[ppId];
+						picker.oldChanged = picker.OnControlResolvedUserChanged;
+
+						console.log("picker");
+						console.log(picker);
+						//OnControlResolvedUserChanged
+						picker.OnControlResolvedUserChanged = function () {
+							if (picker.TotalUserCount == 0) {
+								$('#resolvedUsers').html("");
+								$('#userKeys').html("");
+								$('#userProfileProperties').html("");
+								$('#userID').html("");
+							} else {
+								setTimeout(function () {
+										getUserInfo();
+									},
+									100);
+							}
+							picker.oldChanged();
+						}
+					} else {
+						setTimeout(function () { addOnChanged(ctx); }, 100);
+						console.log("In registerPPOnChangeEvent else");
+					}
+					//}
+				}
+				// Query the picker for user information.
+				function getUserInfo() {
+
+					// Get the people picker object from the page.
+					var peoplePicker = this.SPClientPeoplePicker.SPClientPeoplePickerDict.peoplePickerDiv_TopSpan;
+
+					// Get information about all users.
+					var users = peoplePicker.GetAllUserInfo();
+					console.log(users);
+					var owner = users[0];
+					console.log(owner);
+					$("#siteOwenerEmail").val(owner.AutoFillSubDisplayText);
+					$("#siteOwenerClaim").val(owner.Key);
+					$("#siteOwenerName").val(owner.DisplayText);
+					$("#siteOwenerLogin").val(owner.Description);
+					var userInfo = '';
+					for (var i = 0; i < users.length; i++) {
+						var user = users[i];
+						for (var userProperty in user) {
+							userInfo += userProperty + ':  ' + user[userProperty] + '<br>';
+						}
+					}
+					$('#resolvedUsers').html(userInfo);
+
+					// Get user keys.
+					var keys = peoplePicker.GetAllUserKeys();
+					$('#userKeys').html(keys);
+
+					// Get the first user's ID by using the login name.
+					getUserId(users[0].Key);
+				}
+
+				// Get the user ID.
+				function getUserId(loginName) {
+					var context = new SP.ClientContext.get_current();
+					this.user = context.get_web().ensureUser(loginName);
+					context.load(this.user);
+					context.executeQueryAsync(
+						Function.createDelegate(null, ensureUserSuccess),
+						Function.createDelegate(null, onFail)
+					);
+				}
+
+				function ensureUserSuccess() {
+					$('#userId').html(this.user.get_id());
+					$("#siteOwenerId").val(this.user.get_id());
+				}
+
+				function onFail(sender, args) {
+					alert('Query failed. Error: ' + args.get_message());
+				}
+			</script>
+		</head>
+		<body>
+		<div class="form-group">
+			<label id="Name">
+				Employee Name<span class="error-msg">*</span>
+			</label>
+			<div id="peoplePickerDiv"></div>
+			<input type="hidden" id="siteOwenerId" value="" />
+			<input type="hidden" id="siteOwenerEmail" value="" />
+			<input type="hidden" id="siteOwenerClaim" value="" />
+			<input type="hidden" id="siteOwenerName" value="" />
+			<input type="hidden" id="siteOwenerLogin" value="" />
+			<div>
+				<br />
+				<input type="button" value="Get User Info" onclick="getUserInfo()" />
+				<br />
+				<h1>User info:</h1>
+				<p id="resolvedUsers"></p>
+				<h1>User keys:</h1>
+				<p id="userKeys"></p>
+				<h1>User ID:</h1>
+				<p id="userId"></p>
+			</div>
+			</div>
+		</body>
+		</html>
+	
+// End People picker in HTML	
+	
+	
+	
+	
+//Click resolve People Picker
+				   $("#PP").find("div").text(IO);
+			   var clicking= $("#ctl00_PlaceHolderMain_SdfPeoplePicker_checkNames");
+			   clicking.click();
+			   
+//Date - 7
+	
+	var aaa = new Date("2016-11-23");
+	var bbb = new Date(aaa.setTime(aaa.getTime() - (60 * 1000)));
+	
+	
+//Spservice Update list item
+        $().SPServices({
+            operation: "UpdateListItems",
+            async: false,
+            listName: "Part Issue List",
+            batchCmd: "Update",
+            ID: superId,
+            valuepairs: [
+                ["Title", superId + pass0]
+            ],
+            completefunc: function(xData, Status) {
+                
+            }
+        });
+	
+	
+//Datatable
+
+var t =     $('#ColView').DataTable({
+	
+ } );
+
+ $("#filterRow input[type=text]").keyup(function(){
+  var col=$(this).attr("index");
+ t.column(col).search($(this).val(),true,true).draw();
+  });
+  
+ 
+ 
+ 
+ 
+ //Function
+$SP().list("Part Issue List","..").get({fields:"ID,Status,Part_x0020_Number,Part_x0020_Description,Description,Creation_x0020_Date,Issue_x0020_Reviewed,Review_x0020_Date,Issue_x0020_Owner",where:"Issue_x0020_Owner = '[Me]'",orderby:"Status ASC"},function(data){
+	  for (var i=0; i<data.length; i++){
+
+	  var ID = data[i].getAttribute("ID");
+	  var Status = data[i].getAttribute("Status");
+	  var PartNumber = data[i].getAttribute("Part_x0020_Number");
+	  var PartDescription = data[i].getAttribute("Part_x0020_Description");
+	  var IssueDescription = data[i].getAttribute("Description");
+	  var IssueCreationDate = data[i].getAttribute("Creation_x0020_Date");	
+	  var IssueReviewed = data[i].getAttribute("Issue_x0020_Reviewed");
+	  var IssueOwner = data[i].getAttribute("Issue_x0020_Owner");
+	  var IssueReviewedDate = data[i].getAttribute("Review_x0020_Date");
+
+	 
+	 t.row.add([
+	 
+				"<a href='"+url+"' onclick='return OpenPopup(this)' >"+ID+"</a>",
+				PartNumber,
+				PartDescription,
+				IssueDescription,
+				IssueCreationDate,	
+				IssueReviewed,
+				IssueOwner,
+				IssueReviewedDate,
+				Status
+							
+			] ).draw( false );
+		}
+});
+
+
+
+// Date IE Compatibility
+
+
+if($("#dt").val() == "")
+		{
+			finalDateTo = dtValue;
+			finalDateTo = finalDateTo.split("-")[1] + "-" + finalDateTo.split("-")[2] + "-" + finalDateTo.split("-")[0]; 
+			var veryFinalStartDate1 = new Date(finalDateTo.split("-")[2]+"/"+finalDateTo.split("-")[1]+"/"+finalDateTo.split("-")[0]);
+			var veryFinalStartDate2 = new Date(veryFinalStartDate1.setTime(veryFinalStartDate1.getTime() - (7 * 24 * 60 * 60 * 1000)));
+			ultimateFinalStartDate = Number(veryFinalStartDate2.getMonth()+1)+"-"+veryFinalStartDate2.getDate()+"-"+veryFinalStartDate2.getFullYear();
+
+		}
+		else
+		{
+			finalDateTo = $("#dt").val();
+			finalDateTo = finalDateTo.split("-")[1] + "-" + finalDateTo.split("-")[2] + "-" + finalDateTo.split("-")[0]; 
+			var veryFinalStartDate3 = new Date(finalDateTo.split("-")[2]+"/"+finalDateTo.split("-")[1]+"/"+finalDateTo.split("-")[0]);
+			var veryFinalStartDate4 = new Date(veryFinalStartDate3.setTime(veryFinalStartDate3.getTime() - (7 * 24 * 60 * 60 * 1000)));
+			ultimateFinalStartDate = Number(veryFinalStartDate4.getMonth()+1)+"-"+veryFinalStartDate4.getDate()+"-"+veryFinalStartDate4.getFullYear();
+		}
+
+		
+		
+// Date append 0 to month and date
+twoDigitMonth = Number(fullDate.getMonth()) + 1 + "";
+if (twoDigitMonth.length == 1) {
+	twoDigitMonth = "0" + twoDigitMonth;
+}
+twoDigitDate = fullDate.getDate() + "";
+if (twoDigitDate.length == 1) {
+	twoDigitDate = "0" + twoDigitDate;
+}
+
+
+//Remove last characterSet
+"1234".slice(0,-1)
+
+
+
+//Replace all occurences
+.replace(/\xxx/g,"yyy");
+
+
+
+//Temporary non alert popup
+
+	function tempAlert(msg,duration)
+	{
+	 var el = document.createElement("div");
+	 el.setAttribute("style","position: absolute;font-weight: bold;bottom: 0px;right: 0px;color: black;text-shadow: 1.5px 1.5px 3px #988888;");
+	 el.innerHTML = msg;
+	 setTimeout(function(){
+	  el.parentNode.removeChild(el);
+	 },duration);
+	 document.body.appendChild(el);
+	}
+
+	tempAlert("Please wait while we authenticate you",4000);
+
+function tempAlert(msg,duration)
+{
+ var el = document.createElement("div");
+ el.setAttribute("style","position: absolute;    font-weight: bold;    bottom: 0px;    right: 0px;    color: black;    background-color: #00000047;    width: 100%;    height: 100%;
+    z-index: 100;");
+ el.innerHTML = msg;
+ setTimeout(function(){
+  el.parentNode.removeChild(el);
+ },duration);
+ document.body.appendChild(el);
+}
+
+tempAlert("Please wait while we authenticate you",4000);
+
+
+
+
+
+//Powershell file to folder
+
+(get-childitem -file).BaseName | ForEach-Object {
+new-item -Name $_ -ItemType directory;
+Move-Item -Path $_".pdf"  -Destination $_;
+}
+
+
+// jQuery or SPService present
+if($){alert("JQuery");}
+if($&&$().SPServices){alert("SPServices");}
+
+
+
+//SpService count item limit
+($(xData.responseXML).SPFilterNode("rs:data").attr("ItemCount") == 0)
+($(xData.responseXML).SPFilterNode("rs:data").attr("ListItemCollectionPositionNext") == 0)
+
+
+
+//Unique array - remove duplicate
+
+
+function unique(list)
+{
+	var result = [];
+	$.each(list, function(i, e) {
+		if ($.inArray(e, result) == -1) result.push(e);
+	});
+	return result;
+}
+
+	suppArrx = unique(suppArr);
+
+//Multidimensional Unique array
+function multiDimensionalUnique(arr) {
+    var uniques = [];
+    var itemsFound = {};
+    for(var i = 0, l = arr.length; i < l; i++) {
+        var stringified = JSON.stringify(arr[i]);
+        if(itemsFound[stringified]) { continue; }
+        uniques.push(arr[i]);
+        itemsFound[stringified] = true;
+    }
+    return uniques;
+}
+	
+	
+//Array id separate value unique for People Picker
+http://stackoverflow.com/questions/42176523/removing-specific-values-from-array-with-some-condition-using-jquery
+
+//HTML Table border for cells
+https://suvendugiri.wordpress.com/2013/03/08/html-design-table-with-thin-single-line-border/
+
+//Remove specific item from array
+
+var y = [1, 2, 3, 2, 2, 4]
+var removeItem = 2;
+
+alert('Array before removing the element = '+y);
+y = jQuery.grep(y, function(value) {
+  return value != removeItem;
+});
+alert('Array after removing the element = '+y);
+
+//Table row border
+
+<tr style="
+">
+  <td colspan="8">
+    <div width="100" style="
+    border: 1px solid rgba(0, 0, 0, 0.56);
+    width: 100%;
+    border-style: dashed;
+"></div>
+  </td>
+</tr>
+
+//Jquery multiple select 
+http://wenzhixin.net.cn/p/multiple-select/docs/
+
+//Sharepoint plus
+https://aymkdn.github.io/SharepointPlus/symbols/%24SP%28%29.list.html#.get
+
+
+//Jquery Tabs
+https://os.alfajango.com/easytabs/#tabs1-css
+
+
+//SPService map
+
+		
+var list4 = ["BIW","TCF Interior","TCF Exterior","TCF Chassis"];
+		var listNameCur = "";
+		
+		
+		$.map(list4,function(n)
+		{
+		listNameCur = n;
+			$().SPServices({
+						operation: "GetListItems",
+						async: false,
+						listName: listNameCur,
+						CAMLViewFields: "<ViewFields><FieldRef Name='ID' /></ViewFields>",
+						CAMLQuery: "<Query><Where><Eq><FieldRef Name='Part_x0020_Number'/><Value Type='Text'>" + "Test123" + "</Value></Eq></Where></Query>",
+
+						completefunc: function(xData, Status) {
+
+								$.map($(xData.responseXML).SPFilterNode("z:row"),function(n,i) {
+									var newId = ($(n).attr("ows_ID"));
+
+
+										$().SPServices({
+											operation: "UpdateListItems",async: false,
+											listName: listNameCur,
+											batchCmd: "Update",
+											ID: newId,
+											valuepairs: [
+												["No_x0020_of_x0020_QHF_x0028_Stop", "70.000000000"]
+											],
+											completefunc: function(xData, Status) {
+												//console.log("For " + listNameCur + ", " + Status);console.log( xData.responseXML);
+											}
+										});
+
+								});
+
+						}
+					});
+		
+		
+		});
+
+		
+		
+		
+		
+		
+		
+		//------------------------
+
+		
+//Internal names
+
+//(Without Content type)
+$($($(".ms-gb").find("table")[1]).find("tr")[1]).append("<td class='ms-vh2-nofilter'>Internal Name</td>");
+var xb = $($(".ms-gb")[0]).find("tr");
+var xc = xb.length;
+for(a=1;a<xc;a++)
+{
+	$($($(".ms-gb").find("table")[1]).find("tr")[a]).append(decodeURI($(xb[a]).find("a")[0].href.split("Field=")[1]));
+}
+
+//With Content Type
+$($($(".ms-gb").find("table")[1]).find("tr")[0]).append("<td class='ms-vh2-nofilter'>Internal Name</td>");
+var xb = $($(".ms-gb")[1]).find("tr");
+var xc = xb.length;
+for(a=1;a<xc;a++)
+{
+	$($($(".ms-gb").find("table")[1]).find("tr")[a]).append(decodeURI($(xb[a]).find("a")[0].href.split("Field=")[1]));
+}
+
+//2016
+$($($(".ms-gb").find("table")[0]).find("tr")[0]).append("<td class='ms-vh2-nofilter'>Internal Name</td>");
+var xb = $($(".ms-gb")[0]).find("tr");
+var xc = xb.length;
+for(a=1;a<xc;a++)
+{
+	$($($(".ms-gb").find("table")[0]).find("tr")[a]).append(decodeURI($(xb[a]).find("a")[0].href.split("Field=")[1]));
+}
+
+
+//More
+
+$($($(".ms-gb").find("table")[1]).find("tr")[0]).append("<td class='ms-vh2-nofilter'>Internal Name</td>");
+var xb = $($(".ms-gb")[1]).find("tr");
+var xc = xb.length;
+for(a=1;a<xc;a++)
+{
+	$($($(".ms-gb").find("table")[1]).find("tr")[a]).append(decodeURI($(xb[a]).find("a")[0].href.split("Field=")[1]));
+}
+
+
+//2 decimals
+.toFixed(2);
+
+
+//Remove duplicate from Dropdown / unique dropdown
+
+var map = {};
+$('#loopDdPop option').each(function () {
+	if (map[this.value]) {
+		$(this).remove()
+	}
+	map[this.value] = true;
+})
+//----------------------
+ 
+ 
+//Map
+  
+  $SP().list('Error Messages').get({
+  fields:"Title"
+ 
+}, function(data) {
+	$.map(data, function(item, i) {
+		console.log(data);
+
+            });
+});
+
+
+
+//CDATA
+CAMLQuery: "<Query><Where><Eq><FieldRef Name='Part_x0020_Number_x003a_Supplier'/><Value Type='Text'><![CDATA[" + pqp24 +"]]></Value></Eq></Where></Query>",
+
+
+//Animate zoom image(WIP)
+$(".effectfront").hover(aaa,bbb);
+function aaa(e){$(e.currentTarget).animate({height:'125px',width:'125px',margin:'0'},"fast")}
+function bbb(e){$(e.currentTarget).animate({height:'100px',width:'100px',margin:'25px'},"fast")}
+
+(new)
+.effectfront {
+  padding: 70px 0 30px 0;
+  height: 120px;
+  border: none;
+  margin: 0 auto;
+  cursor:pointer;
+}
+
+.effectfront:hover {
+  
+  -webkit-transform: scale(1.2);
+  -moz-transform: scale(1.2);
+  -o-transform: scale(1.2);
+  transform: scale(1.2);
+  transition: all 0.3s;
+  -webkit-transition: all 0.3s;
+  cursor:pointer;
+}
+(/new)
+
+
+//Unique dropdown
+
+var usedNames = {};
+$("select[id='ddl_Program'] > option").each(function () {
+	if(usedNames[this.text]) {
+		$(this).remove();
+	} else {
+		usedNames[this.text] = this.value;
+	}
+});
+
+//Add attachment in list using SPService
+(Use reference
+<script language="javascript" src="jquery.FileReader.js" type="text/javascript"></script>
+<script language="javascript" src="swfobject.js"></script>
+)
+
+            <td><input type="file" id="myfile" multiple></td>
+            <td>
+			
+			
+    $('input#myfile').fileReader({
+        filereader: "../Docs/filereader.swf"
+    });
+    $("input#myfile").change(function(e) {
+        selectedfile = e.target.files[0];
+        FileReaderJS();
+    });
+
+	
+	
+    function FileReaderJS() {
+        //debugger;
+        if (selectedfile) {
+            filereader = new FileReader();
+            filereader.filename = selectedfile.name;
+            su = selectedfile.name;
+            filereader.onload = function() {
+                data = filereader.result;
+                n = data.indexOf(';base64,') + 8;
+                data = data.substring(n);
+
+
+                var fileobject = new Object();
+                fileobject.FileName = selectedfile.name;
+                fileobject.data = data;
+                LLAttachmentFilesColl.push(fileobject);
+                LoadAttachmentFile(fileobject.filepath, fileobject.FileName);
+
+                //**********************
+
+
+                //**********************
+
+            };
+            filereader.onabort = function() {
+                alert("The upload was aborted.");
+            };
+            filereader.onerror = function() {
+                alert("An error occured while reading the file.");
+            };
+            filereader.readAsDataURL(selectedfile);
+        }
+
+    }
+
+    function addAttachments() {//Call on button submit
+        var noti1 = SP.UI.ModalDialog.showWaitScreenWithNoClose("Uploading Data", "It may take some time for data upload", 80, 430);
+        setTimeout(function() {
+
+            if (LLAttachmentFilesColl != null && LLAttachmentFilesColl.length > 0) {
+                for (var i = 0; i < LLAttachmentFilesColl.length; i++) {
+                    var FileObjectDetails = LLAttachmentFilesColl[i];
+                    $().SPServices({
+
+                        operation: "AddAttachment",
+                        async: false,
+                        listName: "PQP Loop Status List",
+                        listItemID: ItemID,
+                        fileName: FileObjectDetails.FileName,
+                        attachment: FileObjectDetails.data,
+                        completefunc: function(xData, Status) {
+                            //console.log(Status);
+                            //console.log(xData.responseXML);
+                        }
+                    });
+                }
+            }
+
+            SP.UI.ModalDialog.showWaitScreenWithNoClose("Data uploaded successfully", "Closing the window...", 80, 430);
+            setTimeout(function() {
+                window.close();
+            }, 2000);
+        }, 1000);
+
+    }
+
+    function LoadAttachmentFile(filePath, FileName) {
+        $("#prevlist").append("<tr><td style = 'width:300px;font-weight: bold;font-family: Calibri;font-size:11pt;'><span " + filePath + ">" + FileName + "</span></td><td style='width:150px;font-weight: bold;font-family: Calibri;font-size:10pt;'><a style='border-bottom: 1px solid #487bb1;' class='ELAttachdelete' href='#'>Delete</a></td></tr>");
+    }
+
+
+//IE8 Date fixed
+function changeFormat(xxx)
+{
+
+var d=xxx.split("-");
+var date = new Date(d[0],(d[1]-1),d[2]);
+	//var yyy = xxx;
+	var myDate = new Date(date);
+	return myDate.format("MMM-dd-yyyy");
+}
+				
+
+changeFormat("2017-03-10");
+
+
+//HTML Not empty
+
+($("#_idJsp89").html() !== undefined)
+
+
+//Check all checkboxes in list view cretaion
+$($(".ms-authoringControls")[0]).find("input").each(function(){
+$(this).prop("checked",true);
+});
+
+//SPService version history
+$().SPServices({
+  operation: "GetVersionCollection",
+  async: true,
+webURL: "https://spbasic.intra.chrysler.com/sites/EPDBVehicleProgram2",
+  strlistID: "DraftBulletin",
+  strlistItemID: 3848,
+  strFieldName: "Details_x0020_Background_x0020_E",
+  completefunc: function (xData, Status) {
+    $(xData.responseText).find("Version").each(function(i) {
+      console.log("Name: " + $(this).attr("Details_x0020_Background_x0020_E") + "\nModified: " + $(this).attr("Modified"));
+    });  
+  }
+});
+
+
+
+//Remove Read only
+//var removeReadOnly = '<Fields>';
+removeReadOnly += '<Method ID="1"><Field  ID="{1df5e554-ec7e-46a6-901d-d85a3881cb18}" ColName="tp_Author" RowOrdinal="0" ReadOnly="FALSE" Type="User" Name="Author" DisplayName="Created By" StorageTZ="TRUE" SourceID="http://schemas.microsoft.com/sharepoint/v3" StaticName="Author" FromBaseType="TRUE" Version="3" ShowInNewForm="FALSE" ShowInEditForm="FALSE" /></Method>';
+removeReadOnly += '</Fields>';
+
+$().SPServices({
+  operation: "UpdateList",
+  listName: "Users",
+  listProperties:"",
+  updateFields: removeReadOnly,
+  newFields: "",
+  deleteFields: "",
+  listVersion: "",
+  async: false,
+  completefunc: function (xData, Status){  
+  }
+});
+
+//--------------------------------------------------------------
+
+var cc=SP.ClientContext.get_current();
+var web=cc.get_web();
+var lists=web.get_lists();
+var list=lists.getByTitle("Test Susp Files");
+
+var ct=list.get_contentTypes();
+var cts=ct.getItemAtIndex(0);
+cc.load(cts);       
+cc.executeQueryAsync();
+var feilds=cts.get_fields();
+var created=feilds.getByTitle("Created By");
+created.set_readOnlyField(false);
+created.update();
+cc.load(created);            
+cc.executeQueryAsync();
+
+
+
+
+var context = "";
+var web = "";
+var list = "";
+var ct = "";
+var cts = "";
+
+	//---------------------------
+
+	
+		context = SP.ClientContext.get_current();
+		web = context.get_web();
+		list = web.get_lists().getByTitle("DraftBulletin");
+		ct=list.get_contentTypes();
+		context.load(ct);
+		context.executeQueryAsync(call1);
+
+	//---------------------------
+	function call1(sender, args)
+	{
+		cts=ct.getItemAtIndex(0);
+		context.load(cts);
+		context.executeQueryAsync(call2);
+	}
+	//---------------------------
+	function call2(sender,args)
+	{
+		var fields = cts.get_fields();
+		var modified = fields.getByTitle("Modified By");
+		modified.set_readOnlyField(false);
+		modified.update();
+		context.load(modified);            
+		context.executeQueryAsync();
+	}
+	//---------------------------
+	
+//End Remove Read Only	
+	
+	
+	
+//Export sharepoint group users into Excel
+http://geekswithblogs.net/JayantSharma/archive/2013/08/26/how-to-export-users-inside-group-in-excel-in-sharepoint.aspx
+
+
+//Remove user from group
+
+    var group = "All People";
+    var user = "CAG\\T9550S3";
+
+    if (confirm("Are you sure you want to delete User from group?"))
+    {
+
+            $().SPServices({
+                 operation: "RemoveUserFromGroup",
+                            groupName: group,
+                            userLoginName: user,
+                            async: false,
+                            completefunc: function(xData, Status) {alert(Status);}
+
+            }); 
+    }
+
+
+	//Remove user from site
+	t0128s1
+	var user = "cag\\t0128s1";
+	$().SPServices({ 
+	
+         operation: "RemoveUserFromSite", 
+                    userLoginName: user, 
+                    async: false, 
+                    completefunc: function(a,b){debugger;} 
+    }); 
+	
+	//Add user to Sharepoint group
+	
+	var webURL = "https://dev.spbasic.intra.chrysler.com/sites/EPDB";
+var groupName = "EPDB Viewer";
+var userLoginName = "cag\\t1057st";
+
+$().SPServices({
+    operation: "AddUserToGroup",
+	webURL: webURL,
+    groupName: groupName,
+    userLoginName: userLoginName,
+    completefunc: function(data,status){
+       console.log(data.responseXML); 
+    }
+}); 
+
+
+	
+	
+	
+//Add multiple users to SharePoint group
+
+var sugArr = [];
+var sugArr = [
+{S:"EPDBVehicleProgram3",u:"cag\\T9860FN",G:"Viewer-INTERNATIONALCORE"},
+{S:"EPDBVehicleProgram3",u:"cag\\T9860FN",G:"Viewer-RT-603"},
+{S:"EPDBVehicleProgram3",u:"cag\\T9860FN",G:"Viewer-RU-613"},
+{S:"EPDBVehicleProgram3",u:"cag\\T9860FN",G:"Viewer-RU-EVA-613"},
+{S:"EPDBVehicleProgram3",u:"cag\\T9860FN",G:"Viewer-RU-PHEV-613"}
+];
+
+sugArr.forEach(function(su,b){
+	
+	var webURL = "https://spbasic.intra.chrysler.com/sites/" + su.S;
+	var userLoginName = su.u;
+	var groupName = su.G;
+	
+	$().SPServices({
+		operation: "AddUserToGroup",
+		webURL: webURL,
+		async:false,
+		groupName: groupName,
+		userLoginName: userLoginName,
+		completefunc: function(data,status){
+			console.log(data.responseXML);
+			console.log(b + "	" + webURL + "	" + userLoginName + "	" + groupName);		   
+		}
+	});
+});
+
+
+
+
+//Update Items in multiple SC's
+
+var arrURL = [];
+var arrURL = [
+"https://spbasic.intra.chrysler.com/sites/EPDBVehicleProgram1/",
+"https://spbasic.intra.chrysler.com/sites/EPDBVehicleProgram2/",
+"https://spbasic.intra.chrysler.com/sites/EPDBVehicleProgram3/",
+"https://spbasic.intra.chrysler.com/sites/EPDBVehicleProgram4/",
+"https://spbasic.intra.chrysler.com/sites/EPDBPowertrain1/",
+"https://spbasic.intra.chrysler.com/sites/EPDBPowertrain2/",
+"https://spbasic.intra.chrysler.com/sites/EPDBRegulatory/",
+"https://spbasic.intra.chrysler.com/sites/EPDBSystemsComponents/",
+"https://spbasic.intra.chrysler.com/sites/EPDBRestricted/",
+"https://spbasic.intra.chrysler.com/sites/EPDBArchitecture/"
+];
+
+var counter = 1;
+arrURL.forEach(function(a){
+
+var webURL = a;
+
+    $().SPServices({
+      operation:"GetListItems",
+	  webURL: "https://spbasic.intra.chrysler.com/sites/EPDBRegulatory/",
+      listName: "DraftBulletin",
+      CAMLQuery:"<Query><Where><And><Eq><FieldRef Name='IsMigrated'  /><Value Type='Text'>Yes</Value></Eq><Contains><FieldRef Name='Bulletin_x0020_Number'  /><Value Type='Text'><![CDATA[P&C]]></Value></Contains></And></Where></Query>",
+	  async: false,
+      completefunc: function (xData, Status) {//debugger;
+			$(xData.responseXML).SPFilterNode("z:row").each(function() {
+				var superID = $(this).attr("ows_ID");
+				var oldValue = $(this).attr("ows_Bulletin_x0020_Number");
+				var updatedValue = oldValue.replace("P\&C","P_C");
+					counter++;
+					
+					$().SPServices({
+						operation: "UpdateListItems",
+						webURL: webURL,
+						async: false,
+						listName: "DraftBulletin",
+						batchCmd: "Update",
+						ID: superID,
+						valuepairs: [
+							["Bulletin_x0020_Number", updatedValue]
+						],
+						completefunc: function(xData, Status) {//debugger;
+						console.log(counter + "	" + superID + "	" + webURL + "	" + oldValue + "==>" + updatedValue);
+						}
+					});
+					
+        });
+		}
+    });
+
+});
+
+
+Regex for 1.0+2.7+7.9
+https://regex101.com/r/wgVIiQ/1
+
+//Remove blank
+
+$.map( oldArray, function(v){
+  return v === "" ? null : v;
+});
+
+//SharePoint inbuilt popup
+
+OpenPopUpPageWithTitle("https://teamsites.nafta.fcagroup.com/sites/me/pqp/WK/_layouts/15/Upload.aspx?List={8BE0DCF7-5609-46F3-A5F5-582E7792BAE1}&RootFolder=",CloseCallbackPic);
+
+
+//Add people Picker into list
+	function GetUserName(UserName) {
+		try {
+			UserName = UserName.replace(";", "");
+			$().SPServices
+			({
+				operation: "GetUserInfo",
+				async: false,
+				userLoginName: UserName,
+				completefunc: function (xData, Status) {              
+					$(xData.responseXML).find("User").each(function () {
+						var ID = $(this).attr("ID");
+						var firstName = $(this).attr("Name");
+						UserName = ID + ";#" + firstName;
+					});
+				}
+			});
+			return UserName;
+		}
+		catch (err) {
+			alert("error");
+		}	
+	}
+	
+	
+	Users = GetUserName("i:0#.w|cag\\t4211sp");
+	
+	$().SPServices
+            ({
+                operation: "UpdateListItems",
+                async: false,
+				batchCmd: "New",
+                listName: "Test123",
+                valuepairs: [["Approver", Users]],
+                completefunc: function (xData, Status) {
+					console.log(Status);
+                }
+            });
+			
+			
+	
+
+	
+//Save text in file
+
+function saveTextAsFile()
+{
+    var textToSave = "OK";
+    var textToSaveAsBlob = new Blob([textToSave], {type:"text/plain"});
+    var textToSaveAsURL = window.URL.createObjectURL(textToSaveAsBlob);
+    var fileNameToSaveAs = "ABC.txt";
+ 
+    var downloadLink = document.createElement("a");
+    downloadLink.download = fileNameToSaveAs;
+    downloadLink.innerHTML = "Download File";
+    downloadLink.href = textToSaveAsURL;
+    downloadLink.onclick = destroyClickedElement;
+    downloadLink.style.display = "none";
+    document.body.appendChild(downloadLink);
+ 
+    downloadLink.click();
+}
+ 
+function destroyClickedElement(event)
+{
+    document.body.removeChild(event.target);
+}
+ 
+function loadFileAsText()
+{
+    var fileToLoad = document.getElementById("fileToLoad").files[0];
+ 
+    var fileReader = new FileReader();
+    fileReader.onload = function(fileLoadedEvent) 
+    {
+        var textFromFileLoaded = fileLoadedEvent.target.result;
+        document.getElementById("inputTextToSave").value = textFromFileLoaded;
+    };
+    fileReader.readAsText(fileToLoad, "UTF-8");
+}
+
+
+
+
+Additional link: https://coderwall.com/p/prhwzg/add-console-save-to-chrome
+https://stackoverflow.com/questions/56511958/how-to-readin-printout-value-to-text-file-by-javascript
+https://stackoverflow.com/questions/36451098/javascript-displaying-a-file-in-a-text-area
+
+
+//---------------------------------------------------------------------------------------
+	
+	
+	
+//Get Email Ids from Employee ID (TCS)
+var st = "499184;1570158;1243738;1535366;340336;1428439;1592700;1638338;1241883;1289960;1589849;1513741;379254;675186;1576908;676266;745161;1328345;1625913;1356833;1434534;1006095;1574755;1289290;1211080;923934;255185;1006162;1501162;459643;335482;1620367;1527855;1528231;1543369;1710142;1722852;1589293;1590093;1671190;1589058;1754756;1589922;1697435;1045942;1317309;1730913;189420;1333014;464433;577113;982536;1571892;1361717;1396421;1589907;1570174;1492849;1241875;1515074;1332931;1423650;139017;1333362;1589154;1348450;1570488;1608368;1590164;1749735;1753119;1244494;1219575;1407899;1296944;173185;366516;375238;257230;1505895;1295723;478076;1255937;357427;1463624;1040538;1210816;1314261;910254;1195896;1404051;330406;745698;1513093;1246347;1405574;667135;1696124;832264;670044;1218510;1404411;968670;962418;1032449;1367051;1121325;476890;306276;1429345;1428445;1427759;1434116;1505587;1589708;1587614;1422608;1422082;1422667;1647118;1637925;1562087;1589067;1588694;1588756;1588757;1711916;1673770;231722;1674122;1595035;1757256;1219866;1745663;153127".split(";");
+st.forEach(function(i){
+$().SPServices({
+        operation: "GetUserInfo",
+        async: false,
+		userLoginName: "i:0#.f|tcsknowmax|"+i,
+        completefunc: function(xData, Status) {
+            if(Status=="success")
+            {
+				$(xData.responseXML).find("User").each(function() {
+                	console.log($(this).attr("Email"));
+            	});
+            }
+            else
+            {
+            	console.log("blank");
+			}
+
+        }
+    });
+
+});
+
+
+/*Title case*/
+
+    function toTitleCase(str) {
+        return str.replace(
+            /\w\S*/g,
+            function(txt) {
+                return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+            }
+        );
+    }
+	
+	
+	
+	
+/*Query String querystring parameters url*/
+
+function getUrlVars()
+{
+    var vars = [], hash;
+    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+    for(var i = 0; i < hashes.length; i++)
+    {
+        hash = hashes[i].split('=');
+        vars.push(hash[0]);
+        vars[hash[0]] = hash[1];
+    }
+    return vars;
+}
+
+https://www.google.com?xxx=1&yyy=2
+
+getUrlVars()["xxx"]
+
+
+/* Multiple Select */
+http://loudev.com/
+
+
+// Get user details from site collection user list
+$().SPServices({
+  operation: 'GetListItems',
+  async: true,
+  listName: 'UserInfo',
+  // listName: 'User Information List',
+  completefunc: function(xData, Status) {
+   console.log(xData.responseXML);
+  }
+});
+
+
+
+// Get user details from site collection user list using ajax
+$.ajax({
+  url: "/_api/lists/getbytitle('User Information List')/items?$filter=Title eq '" + employeeName + "'&$select=Department,JobTitle",
+  type: "GET",
+  async: false,
+  success: function (xml) {
+    department = $(xml).find('d\\:Department, Department').text();
+    jobTitle = $(xml).find('d\\:JobTitle, JobTitle').text();
+  },
+  error: function (a, b, c) {
+    alert(c);
+  }
+});
+
+
+//Additional
+
+			$().SPServices({
+			  operation:"GetListItems",
+			  listName: "UserInfo",
+			  async: true,
+CAMLQuery:"<Query><Where><Eq><FieldRef Name='ID'/><Value Type='Text'>" + "1849" + "</Value></Eq></Where></Query>",
+			  completefunc: function (xData, Status) {
+					$(xData.responseXML).SPFilterNode("z:row").each(function() {
+console.log($(this).attr("ows_EMail"));
+
+				});
+				}
+			});
+
+			
+			
+//Generate random string
+
+function makeid(length) {
+  var text = "";
+  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+  for (var i = 0; i < length; i++)
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+  return text;
+}
+
+console.log(makeid(18));
+			
+//----------------------------------------------------------------------------------
+
+
+
+//Permissions on Site
+
+https://social.technet.microsoft.com/wiki/contents/articles/28322.how-to-get-unique-permissions-for-siteslistslibraries-for-office-365sharepoint-2013-on-prem.aspx
+
+//Trigger event on class remove
+$("div").on("changedClass", function(){
+    alert("Class Removed");
+});
+
+$(document).on("click", "div", function(){
+    $(this).removeClass("square");               
+    $(this).trigger("changedClass");
+});
+
+
+
+// Expand and Collapse div
+http://jsfiddle.net/93bgwktj/
+
+//Add jquery reference in Chrome Console
+
+var jq = document.createElement('script');
+jq.src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js";
+document.getElementsByTagName('head')[0].appendChild(jq);
+// ... give time for script to load, then type (or see below for non wait option)
+jQuery.noConflict();
+
+
+//Get only first level tr in main table, not nested table
+$(".ms-formtable").find('tr:first').parent().children()
+
+dataTables_empty
+
+// Encryption 
+var actualValues = "Suyog~Correct~Yes~Yes~No~No~No~Yes~Yes~Yes~No~No~No"
+var key = "SPCOE123";
+var simpleCrypto = new SimpleCrypto(key);
+var encodedText = simpleCrypto.encrypt(actualValues);
+var decodedText = simpleCrypto.decrypt(encodedText);
+
+
+//Run With Elevated Privileges
+            SPSecurity.RunWithElevatedPrivileges(delegate ()
+            {
+                try
+                {
+
+                }
+                catch (Exception ex)
+                {
+                    SPDiagnosticsService.Local.WriteTrace(0,
+                      new SPDiagnosticsCategory("getAdminDetails", TraceSeverity.Unexpected,
+                          EventSeverity.ErrorCritical), TraceSeverity.Unexpected, "getLanguageDetails()" + ex.Message,
+                      ex.StackTrace);
+
+                }
+            });
+			
+			
+//Get Current User 2016 and set in people picker field
+
+  var userid= _spPageContextInfo.userId;
+  var requestUri = _spPageContextInfo.webAbsoluteUrl + "/_api/web/getuserbyid(" + userid + ")";
+  var requestHeaders = { "accept" : "application/json;odata=verbose" };
+  $.ajax({
+    url : requestUri,
+    contentType : "application/json;odata=verbose",
+    headers : requestHeaders,
+    success : onSuccess,
+    error : onError
+  });
+
+  function onSuccess(data, request){
+    var loginName = data.d.Title;
+    //alert(loginName);
+	var controlName     = "Set delegation settings for";                    
+	var ppDiv       = $("[id$='ClientPeoplePicker'][title='" + controlName + "']");         // Select the People Picker DIV
+	var ppEditor        = ppDiv.find("[title='" + controlName + "']");  // Use the PP DIV to narrow jQuery scope
+	var spPP        = SPClientPeoplePicker.SPClientPeoplePickerDict[ppDiv[0].id];           // Get the instance of the People Picker from the Dictionary
+	ppEditor.val(loginName);      // Set the value
+	spPP.AddUnresolvedUserFromEditor(true);                 // Resolve the User
+	
+  }
+
+  function onError(error) {
+    alert("error");
+  }
+
+
+
+  
+  /*BIG CODE FOR PEOPLE PICKER CUSTOM*/
+  
+  <!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+    <script type="text/javascript" src="/_layouts/15/sp.core.js"></script>
+    <script type="text/javascript" src="/_layouts/15/clienttemplates.js"></script>
+    <script type="text/javascript" src="/_layouts/15/clientforms.js"></script>
+    <script type="text/javascript" src="/_layouts/15/clientpeoplepicker.js"></script>
+    <script type="text/javascript" src="/_layouts/15/autofill.js"></script>
+    <script type="text/javascript" src="/_layouts/15/1033/sts_strings.js"></script>
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            initializePeoplePicker('peoplePickerDiv');
+            registerPPOnChangeEvent($('#peoplePickerDiv'));
+        });
+
+        function initializePeoplePicker(peoplePickerElementId, Users) {
+            if (typeof(Users) == 'undefined') Users = null;
+            // Create a schema to store picker properties, and set the properties.
+            var schema = {};
+            schema['PrincipalAccountType'] = 'User,DL,SecGroup,SPGroup';
+            schema['SearchPrincipalSource'] = 15;
+            schema['ResolvePrincipalSource'] = 15;
+            schema['AllowMultipleValues'] = false;
+            schema['MaximumEntitySuggestions'] = 50;
+            schema['Width'] = '280px';
+            this.SPClientPeoplePicker_InitStandaloneControlWrapper(peoplePickerElementId, Users, schema);
+        }
+
+        function registerPPOnChangeEvent(ppElement) {
+            var ppId = ppElement.attr('id') + "_TopSpan";
+            console.log(ppId);
+
+            //var addOnChanged = function(ctx) {
+            if (SPClientPeoplePicker &&
+                SPClientPeoplePicker.SPClientPeoplePickerDict &&
+                SPClientPeoplePicker.SPClientPeoplePickerDict[ppId]) {
+
+                console.log("In registerPPOnChangeEvent if");
+
+                var picker = SPClientPeoplePicker.SPClientPeoplePickerDict[ppId];
+                picker.oldChanged = picker.OnControlResolvedUserChanged;
+
+                console.log("picker");
+                console.log(picker);
+                //OnControlResolvedUserChanged
+                picker.OnControlResolvedUserChanged = function () {
+                    if (picker.TotalUserCount == 0) {
+                        $('#resolvedUsers').html("");
+                        $('#userKeys').html("");
+                        $('#userProfileProperties').html("");
+                        $('#userID').html("");
+                    } else {
+                        setTimeout(function () {
+                                getUserInfo();
+                            },
+                            100);
+                    }
+                    picker.oldChanged();
+                }
+            } else {
+                setTimeout(function () { addOnChanged(ctx); }, 100);
+                console.log("In registerPPOnChangeEvent else");
+            }
+            //}
+        }
+        // Query the picker for user information.
+        function getUserInfo() {
+
+            // Get the people picker object from the page.
+            var peoplePicker = this.SPClientPeoplePicker.SPClientPeoplePickerDict.peoplePickerDiv_TopSpan;
+
+            // Get information about all users.
+            var users = peoplePicker.GetAllUserInfo();
+            console.log(users);
+            var owner = users[0];
+            console.log(owner);
+            $("#siteOwenerEmail").val(owner.AutoFillSubDisplayText);
+            $("#siteOwenerClaim").val(owner.Key);
+            $("#siteOwenerName").val(owner.DisplayText);
+            $("#siteOwenerLogin").val(owner.Description);
+            var userInfo = '';
+            for (var i = 0; i < users.length; i++) {
+                var user = users[i];
+                for (var userProperty in user) {
+                    userInfo += userProperty + ':  ' + user[userProperty] + '<br>';
+                }
+            }
+            $('#resolvedUsers').html(userInfo);
+
+            // Get user keys.
+            var keys = peoplePicker.GetAllUserKeys();
+            $('#userKeys').html(keys);
+
+            // Get the first user's ID by using the login name.
+            getUserId(users[0].Key);
+        }
+
+        // Get the user ID.
+        function getUserId(loginName) {
+            var context = new SP.ClientContext.get_current();
+            this.user = context.get_web().ensureUser(loginName);
+            context.load(this.user);
+            context.executeQueryAsync(
+                Function.createDelegate(null, ensureUserSuccess),
+                Function.createDelegate(null, onFail)
+            );
+        }
+
+        function ensureUserSuccess() {
+            $('#userId').html(this.user.get_id());
+            $("#siteOwenerId").val(this.user.get_id());
+        }
+
+        function onFail(sender, args) {
+            alert('Query failed. Error: ' + args.get_message());
+        }
+    </script>
+</head>
+<body>
+<div class="form-group">
+    <label id="Name">
+        Employee Name<span class="error-msg">*</span>
+    </label>
+    <div id="peoplePickerDiv"></div>
+    <input type="hidden" id="siteOwenerId" value="" />
+    <input type="hidden" id="siteOwenerEmail" value="" />
+    <input type="hidden" id="siteOwenerClaim" value="" />
+    <input type="hidden" id="siteOwenerName" value="" />
+    <input type="hidden" id="siteOwenerLogin" value="" />
+    <div>
+        <br />
+        <input type="button" value="Get User Info" onclick="getUserInfo()" />
+        <br />
+        <h1>User info:</h1>
+        <p id="resolvedUsers"></p>
+        <h1>User keys:</h1>
+        <p id="userKeys"></p>
+        <h1>User ID:</h1>
+        <p id="userId"></p>
+    </div>
+    </div>
+</body>
+</html>
+  
+  /*END BIG CODE FOR PEOPLE PICKER CUSTOM*/
+  
+ /*HTML LIST*/
+https://codepen.io/erinesullivan/pen/qGrdGV
+
+//Loading Effect
+https://codepen.io/nxworld/details/zwGpXr
+https://www.nxworld.net/tips/css-text-loading.html
+
+
+//Close Popup Sharepoint Modal Dialog
+SP.UI.ModalDialog.commonModalDialogClose(SP.UI.DialogResult.Cancel);
+SP.UI.ModalDialog.commonModalDialogClose(SP.UI.DialogResult.Ok);
+
+
+
+// Get Quota details
+	var quota_context = new SP.ClientContext.get_current();
+	var quota_site = quota_context.get_site();
+	quota_context.load(quota_site,'Usage');  
+	quota_context.executeQueryAsync(
+		function() {
+			var quota_siteUsageInfo = quota_site.get_usage(); 
+
+			
+                 
+			totalStorage = Number(Number(Number(quota_siteUsageInfo.get_storage()/1024/1024).toFixed(2)) + Number(Number(Number(quota_siteUsageInfo.get_storage()/1024/1024).toFixed(2)*100/Number(quota_siteUsageInfo.get_storagePercentageUsed()*100).toFixed(2) - Number(quota_siteUsageInfo.get_storage()/1024/1024).toFixed(2)).toFixed(2))).toFixed(2) + " MB";
+			usedStorage = Number(quota_siteUsageInfo.get_storage()/1024/1024).toFixed(2) + " MB | " + Number(quota_siteUsageInfo.get_storagePercentageUsed()*100).toFixed(2) + "%";          
+			freeStorage = Number(Number(quota_siteUsageInfo.get_storage()/1024/1024).toFixed(2)*100/Number(quota_siteUsageInfo.get_storagePercentageUsed()*100).toFixed(2) - Number(quota_siteUsageInfo.get_storage()/1024/1024).toFixed(2)).toFixed(2) + " MB | " + (100 - Number(quota_siteUsageInfo.get_storagePercentageUsed()*100).toFixed(2)).toFixed(2) + "%";
+
+			console.log(totalStorage);
+			console.log(usedStorage);
+			console.log(freeStorage);
+
+
+//Store html data in sharepoint list tags
+SP.Utilities.HttpUtility.htmlEncode(html);
+
+//JSON to Excel using jquery
+http://jsfiddle.net/hybrid13i/JXrwM/
+
+//Learn SharePoint
+https://www.tutorialspoint.com/sharepoint/sharepoint_rest_apis.htm
+
+//CSS Glowing Border
+https://jsfiddle.net/Lenndev/erz6v9Lm/
+
+//Input form text (last valid post)
+https://stackoverflow.com/questions/5670879/css-html-create-a-glowing-border-around-an-input-field
+
+//Dropdown change color
+http://jsfiddle.net/614c6cxz/8/
+
+//Popup
+https://www.jqueryscript.net/demo/Context-Popup-Menu-Plugin-jQuery/
+https://demos.jquerymobile.com/1.4.5/popup/
+https://www.jqueryscript.net/demo/jQuery-Plugin-To-Replace-Native-JS-Popup-Boxes-MessageBox/
+
+//get id having special character
+https://stackoverflow.com/questions/6675454/special-characters-in-id-of-html-tags
+[Answer by The Berga Jan 27 '17 at 10:02]
+
+
+//Rest API
+
+	globalDataMFGLRPCompleteManpowerSummary = [];
+	
+	$.ajax({
+		url: _spPageContextInfo.siteAbsoluteUrl +
+		"/_api/web/Lists/GetByTitle('MFG-LRP Complete')/items?$select=ID,Title,FileRef,DocIcon,Document_x0020_Type,Quarter,Status,LinkFilename,FileSizeDisplay",
+		headers: {  
+			Accept: "application/json;odata=verbose"  
+		},  
+		async: false,  
+		success: function(data) {
+			var items;
+			var results;  
+			if (data != null)
+			{
+				items = data.d;  
+				if (items != null)
+				{  
+					results = items.results;
+					globalDataMFGLRPCompleteManpowerSummary = items.results; //Stored globally
+				}
+				else
+				{
+					console.log("No items in List");
+				}
+			}
+			else
+			{
+				console.log("Unable to load data");
+			}
+
+			
+		},  //End Success
+		error: function(data) {
+			console.log("Some error occurred while fetching data");  
+		}  
+	});
+	
+	
+//============================================================================================================
+
+//Loop Timer
+function loopTimer()
+{
+	if(counter1 == "Yes" && counter2 == "Yes" && counter3 == "Yes" && counter4 == "Yes")
+	{
+		console.log("Loop Complete");
+	}
+	else
+	{
+		setTimeout(function()
+		{
+			console.log("Looping");
+			loopTimer();
+		}, 500);
+	}
+}
+
+------------------------------------------------------------------------------------------------------------------
+var first = ["a","b"];
+var second = ["f","b"];
+var third = ["e","r"];
+var fourth = ["w","b"];
+//Merge array
+var finalArr = $.merge($.merge($.merge($.merge([],first),second),third),fourth);
+
+
+/*Load function on postback*/
+
+var parameter = Sys.WebForms.PageRequestManager.getInstance();
+
+    parameter.add_endRequest(function() {
+       CheckSpecialCharacters();
+	   yesNoSpecialCase();
+    });
+	
+	
+/*Check User Permission Rest API*/
+
+    var call = jQuery.ajax({
+        url: _spPageContextInfo.webAbsoluteUrl +
+            "/_api/Web/effectiveBasePermissions",
+        type: "GET",
+        dataType: "json",
+        headers: {
+            Accept: "application/json;odata=verbose"
+        }
+    });
+
+    call.done(function (data, textStatus, jqXHR) {
+        var manageListsPerms = new SP.BasePermissions();
+        manageListsPerms.initPropertiesFromJson(data.d.EffectiveBasePermissions);
+
+        var manageLists = manageListsPerms.has(SP.PermissionKind.manageLists);
+debugger;
+        var message = jQuery("#message");
+        console.log("Manage Lists: " + manageLists);
+    });
+	
+	
+	
+//TID Regex
+[a-zA-Z]+\\[a-zA-Z0-9]+
+[a-zA-Z]+\\[tT][0-9]{4}[a-zA-Z]{2}
+[a-zA-Z]+\\[tTfF][0-9]{4}[a-zA-Z][a-zA-Z0-9]  -  https://regex101.com/r/gEnZ1F/1
+
+
+
+
+
+
+/*Read any site AJAX*/
+      jQuery.ajax({
+            url: "https://get.google.com/albumarchive/",
+            type: "GET",
+            success: function (data) {
+                console.log(data)
+            },
+            error: function (xhr, status, message) {
+                console.log("Error" + message, true);
+            }
+        });
+		
+
+		
+/* HTML table to excel / text / csv*/
+https://jsfiddle.net/foodiepanda/t6w2umcL/
+
+/*HTML table to array of objects*/
+https://jsfiddle.net/foodiepanda/tax352sj/
+
+/*Stylish Footer*/
+https://codepen.io/tgeorgetom/pen/LYEOLNv
+
+//Clicked Element
+$(document).click(function(event) {
+    var text = $(event.target).text();
+});
+
+
+
+//Extract URL online
+https://jsfiddle.net/kL7cryj2/
+
+//List path in JSON
+https://www.convertjson.com/json-path-list.htm
+
+
+//Save text file and upload to sharepoint 
+var destURL = "/sites/SPCOETest/Logs"; //SharePoint Library url where log will be stored
+var fileStart = "DT"; //Log file name starting with
+var textContent = "Hello, this text is inside the file created with REST API '\nYohoooo...'"; //Content of new file
+
+function logClient(a,b,c)
+{
+	var curDate=new Date();
+		
+	var content = c;
+	var digest = $("#__REQUESTDIGEST").val();
+	var url = _spPageContextInfo.webAbsoluteUrl + "/_api/web/getfolderbyserverrelativeurl('"+a+"')/Files/add(overwrite=true, url='"+b+"_"+currentDate+"_logs.txt')";
+	jQuery.ajax({
+		url: url,
+		type: "POST",
+		data: content,
+		headers: {        
+			"accept": "application/json;odata=verbose", 
+			"X-RequestDigest": digest       
+		},
+		success: function(data){
+			console.log(data);
+		},
+		error: function(data){
+			console.log("Error: "+data);
+		}
+	});
+}
+
+
+//Inactive users
+
+//debugger;
+var url = _spPageContextInfo.webAbsoluteUrl + "/_api/web/roleAssignments/groups?$expand=Users";
+var webUsers = [];
+$.getJSON(url)
+.then(function(data){
+    data.value.forEach(function(g){
+         if(g.Users.length > 0)
+            webUsers = webUsers.concat(g.Users);
+    }); 
+    console.log("Found: "+webUsers.length);
+	
+	webUsers.forEach(function(x,y){
+		
+			if(x.LoginName.indexOf("|") != -1)
+			{
+				userprofile_getTID(y,x.LoginName.split("|")[1]);
+			}
+			else if(x.LoginName.indexOf("\\") != -1)
+			{
+				userprofile_getTID(y,x.LoginName);
+			}
+			else
+			{
+				console.log(g.Users[0].LoginName+"    Unable to fetch");
+			}
+		
+	});
+
+
+	
+});
+
+
+//Get inactive user/()test
+function userprofile_getTID(yx,su)
+{
+
+    $.ajax({
+        url: _spPageContextInfo.webAbsoluteUrl + "/_api/SP.UserProfiles.PeopleManager/GetPropertiesFor(accountName=@v)?@v='" + su +  "'",
+        type: "GET",
+        async:true,             
+        headers: {
+            "Accept": "application/json;odata=verbose",
+        },
+
+        success: function (data) {//console.log(data);//debugger;
+			if(data.d.Email == undefined)
+			{
+				console.log(yx+":	"+data.d.Email+"~"+ su+"    Inactive");	
+			}
+			else if(data.d.Email.length > 0)
+			{
+				console.log(yx+":	"+data.d.Email+"~"+ su+"    Active");
+			}
+			else
+			{
+				console.log(yx+":	"+su+"    Unable to fetch data");
+			}
+
+        },
+
+        error: function (data) {//console.log(data);//debugger;
+            console.log(yx+":	"+su+"    Unable to fetch data");
+        }
+
+    }); //End Ajax
+}
+
+
+
+//Update file metadata with Rest API using ValidateUpdateListItem in SharePoint on-premises
+The sample below updates the Editor and Author fields on SharePoint on-premises (SP2016 and SP2019) without increasing item version.
+
+{
+      "formValues": [
+            {
+                  "__metadata": { "type": "SP.ListItemFormUpdateValue" },
+                  "FieldName": "Editor",
+                  "FieldValue": "[{'Key':'i:0#.w|aaron@testdomain.com'}]"
+            },
+            {
+                  "__metadata": { "type": "SP.ListItemFormUpdateValue" },
+                  "FieldName": "Author",
+                  "FieldValue": "[{'Key':'i:0#.w|aaron@testdomain.com'}]"
+            }
+      ],
+      "bNewDocumentUpdate": true
+}
+
+The REST API ValidateUpdateListItem() on the ListItem object is much easier in providing the Person field values to update.
+In addition, it has an option bNewDocumentUpdate to specify how you want item version to be updated.
+https://techcommunity.microsoft.com/t5/microsoft-sharepoint-blog/update-file-metadata-with-rest-api-using-validateupdatelistitem/ba-p/1365682
+
+
+//jQuery AM PM Date
+function formatAMPM(date) {
+  var day = date.getDate();
+  var monthsArr = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  var months = monthsArr[date.getMonth()].slice(0,3);
+  var year = date.getFullYear();
+  var hours = date.getHours();
+  var minutes = date.getMinutes();
+  var ampm = hours >= 12 ? "PM" : "AM";
+  hours = hours % 12;
+  hours = hours ? hours : 12; // the hour '0' should be '12'
+  minutes = minutes < 10 ? "0"+minutes : minutes;
+  hours = hours < 10 ? "0"+hours : hours;
+  day = day < 10 ? "0"+day : day;
+  var strTime = day+"-"+months+"-"+year+" "+hours + ":" + minutes + " " + ampm;
+  return strTime;
+}
+
+
+//jQuery ajax post sata get response
+            $.ajax({
+                url: 'https://cors-anywhere.herokuapp.com/https://qr-generator.qrcode.studio/qr/custom',
+                dataType: 'text',
+                type: 'post',
+                contentType: 'application/x-www-form-urlencoded',
+                data: '{"data":"🛒\\nAS","config":{"body":"dot","eye":"frame14","eyeBall":"ball17","erf1":[],"erf2":["fh"],"erf3":["fv"],"brf1":[],"brf2":["fh"],"brf3":["fv"],"bodyColor":"#26367A","bgColor":"#FFFFFF","eye1Color":"#26367A","eye2Color":"#26367A","eye3Color":"#26367A","eyeBall1Color":"#26367A","eyeBall2Color":"#26367A","eyeBall3Color":"#26367A","gradientColor1":null,"gradientColor2":null,"gradientType":"linear","gradientOnEyes":true,"logo":"","logoMode":"clean"},"size":300,"download":"imageUrl","file":"svg"}',
+                success: function( data, textStatus, jQxhr ){
+                    console.log( data );
+                },
+                error: function( jqXhr, textStatus, errorThrown ){
+                    console.log( errorThrown );
+                }
+            });
+			
+			
+//Login Sign up form
+https://codepen.io/pradeeptomar21/pen/zYvVyaB
+
+
+
+//Filter Shadow
+filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 0.4));
+
+https://css-tricks.com/adding-shadows-to-svg-icons-with-css-and-svg-filters/
+
+
+//iphone ios safari file upload buttom small css
+	input::-webkit-file-upload-button {
+		font-size:35px !important;
+		
+	}
+	
+	
+	
+//Count occurence
+function occurrences(string, substring){
+    var n=0;
+    var pos=0;
+
+    while(true){
+        pos=string.indexOf(substring,pos);
+        if(pos!=-1){ n++; pos+=substring.length;}
+        else{break;}
+    }
+    return(n);
+}
+
+
+//rest api more than 5000
+ var url = _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('DocumentList')/items?$top=1000";
+    var response = response || [];  // this variable is used for storing list items
+    function GetListItems(){
+        $.ajax({
+            url: url,  
+            method: "GET",  
+            headers: {  
+                "Accept": "application/json; odata=verbose"  
+            },
+            success: function(data){
+                response = response.concat(data.d.results);
+                if (data.d.__next) {
+                    url = data.d.__next;
+                    GetListItems();
+                }
+            },
+            error: function(error){
+                   // error handler code goes here
+            }
+        });
+    }
+	
+	
+	
+	//REST API update item
+	
+function updateMe(id,x,y)
+{
+    $.ajax({
+        url: _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('New RTS')/items(" + id +")",
+        type: "POST",
+        contentType: "application/json;odata=verbose",
+        data: JSON.stringify
+        ({
+            __metadata:
+            {
+                type: "SP.Data.New_x0020_RTSListItem"
+            },
+            DepCategoryId: x,
+            DepSubCategoryId: y
+
+        }),
+        headers: {
+            "Accept": "application/json;odata=verbose",
+            "Content-Type": "application/json;odata=verbose",
+             "IF-MATCH": "*",
+            "X-HTTP-Method": "MERGE",
+            "X-RequestDigest": $("#__REQUESTDIGEST").val()
+        },
+        success: function (data) {debugger;
+            console.log("Success: ID-"+id+" | "+x+ " | "+y);
+        },
+        error: function (data) {
+            console.log("Error: ID-"+id+" | "+x+ " | "+y);
+        }
+    });
+}
+
+
+
+//REST API GET REQUEST DIGEST Value
+      
+ $.ajax 
+    ({   
+        url: _spPageContextInfo.webAbsoluteUrl + "/_api/contextinfo",   
+        type: "POST",   
+        async: false,   
+        headers: { "accept": "application/json;odata=verbose" },   
+        success: function(data){   
+            var FormDigestValue = data.d.GetContextWebInformation.FormDigestValue; 
+            console.log(FormDigestValue);            
+        },   
+        error: function (xhr, status, error)
+        {
+              console.log("Failed");
+        }  
+    });
+}
+
+
+
+
+//To check if element is hidden
+$(element).is(":hidden");
+
+
+
+//Update lookup coolumn with id
+function updateMe(id,x,y)
+{
+    $.ajax({
+        url: _spPageContextInfo.webAbsoluteUrl + "/_api/web/lists/getbytitle('New RTS')/items(" + id +")",
+        type: "POST",
+        contentType: "application/json;odata=verbose",
+        data: JSON.stringify
+        ({
+            __metadata:
+            {
+                type: "SP.Data.New_x0020_RTSListItem"
+            },
+            DepCategoryId: x,
+            DepSubCategoryId: y
+
+        }),
+        headers: {
+            "Accept": "application/json;odata=verbose",
+            "Content-Type": "application/json;odata=verbose",
+             "IF-MATCH": "*",
+            "X-HTTP-Method": "MERGE",
+            "X-RequestDigest": $("#__REQUESTDIGEST").val()
+        },
+        success: function (data) {debugger;
+            console.log("Success: ID-"+id+" | "+x+ " | "+y);
+        },
+        error: function (data) {
+            console.log("Error: ID-"+id+" | "+x+ " | "+y);
+        }
+    });
+}
